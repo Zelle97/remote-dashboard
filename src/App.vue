@@ -45,77 +45,81 @@
 <script>
   import axios from 'axios';
 
-export default {
-  name: 'app',
-  data () {
-    return {
-      items: [
-        {
-          "name": "Izanagi",
-          "online": false,
-        },
-        {
-          "name":"openmediavault",
-          "online": false,
-        }
-      ]
-    }
-  },
-  methods: {
-    startHost(entry) {
-      let url = "http://192.168.178.6:8888/wake/" + entry.name;
-      axios({method: "POST", "url": url}).then(result => {
-        console.log(result.data.origin);
-      }, error => {
-        console.error(error);
-      });
-    },
-    shutdownHost(entry) {
-      let url = "http://192.168.178.6:8888/shutdown/" + entry.name;
-      axios({method: "POST", "url": url}).then(result => {
-        console.log(result.data.origin);
-      }, error => {
-        console.error(error);
-      });
-    },
-    getText(entry) {
-      this.checkHost(entry);
-      for (let i = 0; i < this.items.length; i++) {
-        if (this.items[i].name == entry.name) {
-          if (this.items[i].online) {
-            return 'Online'
-          } else {
-            return 'Offline'
-          }
-        } else {
-          console.log('Host ' + name + ' not found')
-        }
+  const backendUrl = "http://localhost:8888";
+
+  export default {
+    name: 'app',
+    data() {
+      return {
+        items: []
       }
     },
-    checkHost(entry) {
-      let url = "http://192.168.178.6:8888/status/" + entry.name;
-      axios({method: "GET", "url": url}).then(result => {
-
-        let name = result.data.name;
-        let status = result.data.status;
-
+    beforeMount() {
+      this.getHosts();
+    },
+    methods: {
+      getHosts() {
+        let url = backendUrl + "/hosts";
+        axios({method: "get", "url": url}).then(result => {
+          this.items = result.data;
+        }, error => {
+          console.error(error);
+        });
+      },
+      startHost(entry) {
+        let url = backendUrl + "/wake/" + entry.name;
+        axios({method: "POST", "url": url}).then(result => {
+          console.log(result.data.origin);
+        }, error => {
+          console.error(error);
+        });
+      },
+      shutdownHost(entry) {
+        let url = backendUrl + "/shutdown/" + entry.name;
+        axios({method: "POST", "url": url}).then(result => {
+          console.log(result.data.origin);
+        }, error => {
+          console.error(error);
+        });
+      },
+      getText(entry) {
+        this.checkHost(entry);
         for (let i = 0; i < this.items.length; i++) {
-          if (this.items[i].name == name) {
-            if (status == 'Online') {
-              this.items[i].online = true;
+          if (this.items[i].name == entry.name) {
+            if (this.items[i].online) {
+              return 'Online'
             } else {
-              this.items[i].online = false;
+              return 'Offline'
             }
           } else {
             console.log('Host ' + name + ' not found')
           }
         }
-      }, error => {
-        console.error(error);
-      });
+      },
+      checkHost(entry) {
+        let url = backendUrl + "/status/" + entry.name;
+        axios({method: "GET", "url": url}).then(result => {
+
+          let name = result.data.name;
+          let status = result.data.status;
+
+          for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].name == name) {
+              if (status == 'Online') {
+                this.items[i].online = true;
+              } else {
+                this.items[i].online = false;
+              }
+            } else {
+              console.log('Host ' + name + ' not found')
+            }
+          }
+        }, error => {
+          console.error(error);
+        });
+      }
     }
   }
-}
 </script>
 
 <style>
