@@ -21,16 +21,23 @@ To use this you will need to be able to communicate with the server-backend.
 
 Make sure the communication between the dashboard and the specified backend is possible.
 
-## Usage
-
-TODO
-
 ### Stand-Alone
 
 If you want to use the remote-server backend without the home-remote-compose file you can do this in two ways.
 
  1) Run the Docker Container without the compose from home-remote-app
  2) Clone this repo and execute 'npm i' and 'npm build'.
+
+
+### Docker and Architectures
+
+This application was mainly developed to be used to start and shutdown other computers from a smaller device ( like a raspberry ).
+The Docker images for this app are automaticly build from DockerHub.
+But if you want to use this app on a raspberry you have to build the image yourself 
+because DockerHub doesen't support the automated building of multiple architectures ( at this moment ).
+
+To do so clone this repo and execute 'docker build . -t zellesdocker/remote-dashboard'.
+This will build the image with the architecture of the system you are executing the command on.
  
 
 ##### Author & Licence
