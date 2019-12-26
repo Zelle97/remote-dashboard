@@ -23,10 +23,11 @@ Make sure the communication between the dashboard and the specified backend is p
 
 ### Stand-Alone
 
-If you want to use the remote-server backend without the home-remote-compose file you can do this in two ways.
+If you want to use the remote-dashboard backend without the home-remote-compose file you can do this in three ways.
 
  1) Run the Docker Container without the compose from home-remote-app
- 2) Clone this repo and execute 'npm i' and 'npm build'.
+ 2) Clone this repo and execute ``` npm run dev ```.
+ 3) Run ``` npm run build ``` and copy the content of the dist directory into a webserver
 
 
 ### Docker and Architectures
@@ -36,7 +37,7 @@ The Docker images for this app are automaticly build from DockerHub.
 But if you want to use this app on a raspberry you have to build the image yourself 
 because DockerHub doesen't support the automated building of multiple architectures ( at this moment ).
 
-To do so clone this repo and execute 'docker build . -t zellesdocker/remote-dashboard'.
+To do so clone this repo and execute ``` docker build . -t zellesdocker/remote-dashboard ```.
 This will build the image with the architecture of the system you are executing the command on.
  
 
